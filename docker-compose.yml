@@ -1,0 +1,44 @@
+version: '3.2'
+
+services:
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
+      MONGO_INITDB_DATABASE: wallet
+    healthcheck:
+      test:
+      - CMD
+      - mongo
+      - --eval
+      - "db.adminCommand('ping')"
+    env_file:
+      - .env
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb_data_container:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  app:
+    image: app
+    build:
+      context: .
+      dockerfile: "./docker/${NODE_ENV}/Dockerfile"
+    environment:
+      NODE_ENV: "${NODE_ENV}"
+      APP_VERSION: "${APP_VERSION}"
+      PORT: "${PORT}"
+      TIMEZONE: ''
+      SECRET: "${SECRET}"
+      DATABASE_URL: "${DATABASE_URL}"
+    ports:
+      - 4000:4000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    env_file:
+      - .env
+
+volumes:
+  mongodb_data_container:

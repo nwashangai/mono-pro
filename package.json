@@ -1,0 +1,19 @@
+{
+  "name": "mono-pro",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "lerna run start",
+    "build": "lerna run build",
+    "dev": "lerna run dev --stream",
+    "test": "lerna run test",
+    "clean": "npx lerna clean -y ",
+    "new-version": "lerna version --conventional-commits --yes",
+    "bootstrap": "npx lerna bootstrap --hoist",
+    "publish": "lerna publish --skip-git --skip-npm --force-publish * --yes && lerna exec -- npm publish"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+
+}

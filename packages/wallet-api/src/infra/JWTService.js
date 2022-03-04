@@ -8,7 +8,7 @@ export default class JWTService {
   }
 
   decode(token) {
-    var decoded = this.#jwt.decode(token);
+    let decoded = this.#jwt.decode(token);
     return decoded;
   }
 

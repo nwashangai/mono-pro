@@ -7,7 +7,7 @@ export default ({
   logger,
   httpStatus,
   statusMonitor,
-  framework: { Router },
+  framework: { Router: expressRouter },
   bodyParser,
   cors,
   compression,
@@ -15,10 +15,8 @@ export default ({
   morgan,
   userController,
 }) => {
-  const router = Router();
-  const apiRouter = Router();
-
-  // const UserController = container.resolve('userController');
+  const router = expressRouter();
+  const apiRouter = expressRouter();
 
   if (config.env === 'development') {
     router.use(statusMonitor());

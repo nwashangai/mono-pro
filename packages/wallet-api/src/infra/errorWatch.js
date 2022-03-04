@@ -1,11 +1,11 @@
 export default ({ logger }) => {
-  return async (callback, callbackParams = undefined) => {
+  return async(callback, callbackParams = undefined) => {
     const statusCodeRegex = /\{.*?\}/;
     try {
       return {
         isSuccessful: true,
         statusCode: 200,
-        ...(await callback(callbackParams)),
+        ...await callback(callbackParams),
       };
     } catch (error) {
       const isCustomError = error.message.match(statusCodeRegex);
@@ -14,9 +14,9 @@ export default ({ logger }) => {
 
       return {
         isSuccessful: false,
-        statusCode: isCustomError
-          ? Number(isCustomError[0].substring(1, isCustomError[0].length - 1))
-          : 500,
+        statusCode: isCustomError ?
+          Number(isCustomError[0].substring(1, isCustomError[0].length - 1)) :
+          500,
         data: {
           message: isCustomError ? message : 'Internal server error',
         },

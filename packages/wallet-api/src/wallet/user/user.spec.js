@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
 import hashPassword from '../../infra/hashPassword';
 import validation from '../../infra/validation';
-import makeFakeUser from '../../../__test__/fixtures/user';
+import makeFakeUser from '../../__test__/fixtures/user';
 import buildUserFactory from './';
 
 const { hash, isHashMatched } = hashPassword({ bcrypt });
@@ -44,14 +44,14 @@ describe('Test user Entity', () => {
   });
 
   it('must have a valid nationality if provided', () => {
-    const user = makeFakeUser({ nationality: 'ch' });
+    const user = makeFakeUser({ country: 'ch' });
     expect(() => createUser(user)).toThrow(
       '{400} User must have a valid nationality'
     );
   });
 
   it('may not have a valid nationality', () => {
-    const user = makeFakeUser({ nationality: null });
+    const user = makeFakeUser({ country: null });
     const userObj = createUser(user);
     expect(userObj.getNationality()).toBe(null);
   });

@@ -12,7 +12,7 @@ export default (controller) => {
       path: req.path,
       headers: {
         'Content-Type': req.get('Content-Type'),
-        Referer: req.get('Authorization'),
+        'Referer': req.get('Authorization'),
         'User-Agent': req.get('User-Agent'),
       },
     };

@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import codeGenerator from '../../infra/codeGenerator';
 import validation from '../../infra/validation';
-import makeFakeRegister from '../../../__test__/fixtures/verification';
+import makeFakeRegister from '../../__test__/fixtures/verification';
 import buildVerificationFactory from '.';
 
 let register = buildVerificationFactory(
@@ -31,9 +31,9 @@ describe('Test verification Entity', () => {
 
   it('create valid user verification record', () => {
     const user = makeFakeRegister({
-      vid: '1',
+      _id: '1',
       email: 'Johndoe@gmail.com',
-      isVerified: true,
+      isVerified: true
     });
     const verification = register(user);
     expect(verification.getId()).toBe('1');

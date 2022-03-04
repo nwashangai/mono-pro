@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
-import { buildFakeCollection } from '../../../__test__/fixtures/db';
-import makeFakeUser from '../../../__test__/fixtures/user';
+import { buildFakeCollection } from '../../__test__/fixtures/db';
+import makeFakeUser from '../../__test__/fixtures/user';
 import buildUserCases from '.';
 import passwordHash from '../../infra/hashPassword';
 import validation from '../../infra/validation';
@@ -18,15 +18,15 @@ let userCases = buildUserCases({
               phone: '123456789',
               email: 'johndoe@example.com',
               password:
-                '$2b$10$hl3iSlqcAPg.Tc8f8ggmkuvCh/LMcifsr/1mn3WqCQuLp7Lb8TXE6',
+                '$2b$10$hl3iSlqcAPg.Tc8f8ggmkuvCh/LMcifsr/1mn3WqCQuLp7Lb8TXE6'
             }
           : null;
-      },
-    },
+      }
+    }
   },
   validation: validation(),
   passwordHash: passwordHash({ bcrypt }),
-  httpStatus,
+  httpStatus
 });
 
 describe('Test User use cases', () => {
@@ -43,15 +43,15 @@ describe('Test User use cases', () => {
                   phone: '+234123456789',
                   email: 'johndoe@example.com',
                   password:
-                    '$2b$10$hl3iSlqcAPg.Tc8f8ggmkuvCh/LMcifsr/1mn3WqCQuLp7Lb8TXE6',
+                    '$2b$10$hl3iSlqcAPg.Tc8f8ggmkuvCh/LMcifsr/1mn3WqCQuLp7Lb8TXE6'
                 }
               : null;
-          },
-        },
+          }
+        }
       },
       validation: validation(),
       passwordHash: passwordHash({ bcrypt }),
-      httpStatus,
+      httpStatus
     });
   });
 
@@ -61,7 +61,7 @@ describe('Test User use cases', () => {
     expect(newUser.email).toBe(user.email.toLowerCase());
     expect(newUser.phone).toBe(user.phone);
     expect(newUser.name).toBe(user.name);
-    expect(newUser.nationality).toBe(user.country);
+    expect(newUser.country).toBe(user.country);
   });
 
   it('must not use already existing email', async () => {
@@ -76,7 +76,7 @@ describe('Test User use cases', () => {
     const newUser = await userCases.updateUserInfo('1', user);
     expect(newUser.phone).toBe(user.phone);
     expect(newUser.name).toBe(user.name);
-    expect(newUser.nationality).toBe(user.country);
+    expect(newUser.country).toBe(user.country);
   });
 
   it('change user password', async () => {

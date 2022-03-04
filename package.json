@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "check": "lerna run check",
     "start": "lerna run start",
     "build": "lerna run build",
     "dev": "lerna run dev --stream",
+    "eslint": "lerna run eslint",
+    "eslint:fix": "lerna run eslint:fix",
     "test": "lerna run test",
     "clean": "npx lerna clean -y ",
     "new-version": "lerna version --conventional-commits --yes",
-    "bootstrap": "npx lerna bootstrap --hoist",
+    "bootstrap": "npx lerna bootstrap --hoist -- --legacy-peer-deps",
     "publish": "lerna publish --skip-git --skip-npm --force-publish * --yes && lerna exec -- npm publish"
   },
   "devDependencies": {

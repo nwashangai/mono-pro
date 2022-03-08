@@ -1,4 +1,13 @@
-export default ({ config, fs, winston }) => {
+import fs from 'fs';
+
+import winston from 'winston';
+import * as Types from '../types';
+
+type LoggerBuildType = {
+  config: Types.ConfigType;
+};
+
+const logger = ({ config }: LoggerBuildType) => {
   if (!fs.existsSync('logs')) {
     fs.mkdirSync('logs');
   }
@@ -28,3 +37,6 @@ export default ({ config, fs, winston }) => {
 
   return writer;
 };
+
+export type LoggerType = winston.Logger;
+export default logger;

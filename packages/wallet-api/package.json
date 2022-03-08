@@ -2,13 +2,14 @@
   "name": "@mono/wallet-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index",
+  "typings": "dist/index",
   "scripts": {
-    "build": "npm run clean && babel src --out-dir lib --extensions \".ts,.js\" --source-maps inline",
+    "build": "npm run clean && npx tsc",
     "now-build": "npm run build",
     "clean": "rimraf dist",
-    "db": "babel-node ./db/index.js",
-    "dev": "nodemon --exec babel-node ./src/index.js",
+    "db": "ts-node ./db/index.ts",
+    "dev": "ts-node-dev --respawn -- ./src/index.ts",
     "start": "npm run clean && npm run build && cd lib && node index.js",
     "test": "jest src --coverage",
     "tsc": "tsc",
@@ -28,10 +29,10 @@
     ],
     "globalSetup": "./jest-setup.js",
     "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/*.js",
-      "!src/db/*.js",
-      "!src/config/environments/*.js"
+      "src/**/*.ts",
+      "!src/*.ts",
+      "!src/db/*.ts",
+      "!src/config/environments/*.ts"
     ],
     "globalTeardown": "./jest-teardown.js",
     "testEnvironment": "./jest-mongo.js",
@@ -41,6 +42,7 @@
     "@babel/eslint-parser": "^7.17.0",
     "@devmastery/pipe": "^0.0.6",
     "@mono/tools": "^1.0.0",
+    "@types/express-serve-static-core": "^4.17.21",
     "awilix": "^4.3.3",
     "axios": "^0.18.0",
     "babel-plugin-inline-dotenv": "^1.2.2",
@@ -61,7 +63,8 @@
     "ramda": "^0.27.1",
     "ts-node": "^10.6.0",
     "typescript": "^4.6.2",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -72,6 +75,7 @@
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-typescript": "^7.16.7",
+    "@types/node": "~7.0.5",
     "awesome-typescript-loader": "^5.2.1",
     "babel-jest": "^24.4.0",
     "dotenv": "^6.2.0",
@@ -90,6 +94,7 @@
     "nodemon": "^1.18.10",
     "prettier": "2.2.1",
     "rimraf": "^2.6.3",
-    "source-map-loader": "^3.0.1"
+    "source-map-loader": "^3.0.1",
+    "ts-node-dev": "^1.1.8"
   }
 }

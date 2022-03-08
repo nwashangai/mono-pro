@@ -1,14 +1,23 @@
-import { ConstructorType, IUser, BuildReturn, CreateUserInput } from './types';
+import {
+  ConstructorType,
+  IUser,
+  BuildReturn,
+  CreateUserInput,
+  HttpStatus,
+  Models
+} from './types';
+import { UserType } from '../../wallet/user';
 
 export default class User {
-  private DB;
-  private httpStatus;
-  private makeNewUser;
+  private DB: Models;
+  private httpStatus: HttpStatus;
+  private makeNewUser: UserType;
 
   constructor({ models, httpStatus, makeNewUser }: ConstructorType) {
     this.DB = models;
     this.httpStatus = httpStatus;
     this.makeNewUser = makeNewUser;
+    this.build = this.build.bind(this);
     this.createNewUser = this.createNewUser.bind(this);
     this.login = this.login.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
@@ -81,7 +90,7 @@ export default class User {
       phone: userObj.getPhone(),
       lastLogin: userObj.getLastLogin(),
       role: userObj.getRole()
-    } as IUser;
+    };
   }
 
   async updateUserInfo(_id: string, userInfo: IUser) {

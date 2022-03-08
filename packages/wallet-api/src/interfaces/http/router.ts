@@ -1,3 +1,4 @@
+import { RouterConstructorType } from './types';
 import httpLogger from './middlewares/http-logger';
 import makeCallback from './utils/makeExpressCallback';
 import errorHandler from './middlewares/http-error-handler';
@@ -9,12 +10,13 @@ export default ({
   statusMonitor,
   framework: { Router: expressRouter },
   bodyParser,
+  validation,
   cors,
   compression,
   ramda,
   morgan,
-  userController,
-}) => {
+  userController
+}: RouterConstructorType) => {
   const router = expressRouter();
   const apiRouter = expressRouter();
 
@@ -31,7 +33,7 @@ export default ({
       cors({
         // origin: ['http://localhost:3000'],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
+        allowedHeaders: ['Content-Type', 'Authorization']
       })
     )
     .use(bodyParser.json())
@@ -42,11 +44,13 @@ export default ({
    */
   apiRouter.post(
     '/auth/register',
+    validation.validateStartRegistration,
     makeCallback(userController.startRegistration)
   );
 
   apiRouter.post(
     '/auth/complete-registration',
+    validation.validateRegistration,
     makeCallback(userController.completeRegistration)
   );
 

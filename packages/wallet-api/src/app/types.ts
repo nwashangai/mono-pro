@@ -1,12 +1,11 @@
-import { Type } from 'typescript';
 import * as Types from '../types';
 
 export * from '../types';
 
 export type ConstructorType = {
-  config: Types.ConfigType;
-  logger: Type.LoggerType;
-  mongoose: Types.MongooseType;
+  server: any;
+  logger: Types.LoggerType;
+  dataSource: Types.IDB;
 };
 
 export interface IDB {

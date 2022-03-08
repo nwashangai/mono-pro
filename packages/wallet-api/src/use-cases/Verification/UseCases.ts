@@ -1,15 +1,18 @@
 import {
   ConstructorType,
+  Models,
   VerificationType,
   BuildReturn,
   RegisterInput
 } from './types';
-import buildVerificationEntityFactory from '../../wallet/verification';
+import buildVerificationEntityFactory, {
+  RegisterReturn
+} from '../../wallet/verification';
 
 export default class Verification implements VerificationType {
-  private DB;
-  private sendMail;
-  private verificationObject;
+  private DB: Models;
+  private sendMail: (email: string, subject: string, body: string) => void;
+  private verificationObject: (input: RegisterInput) => RegisterReturn;
 
   constructor({
     validation,
@@ -25,6 +28,7 @@ export default class Verification implements VerificationType {
       codeGenerator,
       httpStatus
     );
+    this.build = this.build.bind(this);
     this.startRegistration = this.startRegistration.bind(this);
     this.verify = this.verify.bind(this);
     this.isCodeValid = this.isCodeValid.bind(this);

@@ -22,7 +22,8 @@ module.exports = {
   settings: {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".d.ts"]
+        "extensions": [".js", ".jsx", ".ts", ".d.ts"],
+        "paths": ["src"]
       }
     }
   },
@@ -257,7 +258,7 @@ module.exports = {
     "operator-assignment": [WARN, "never"],
     "operator-linebreak": [WARN, "after"],
     "padded-blocks": [WARN, "never"],
-    "quote-props": [WARN, "consistent-as-needed"],
+    // "quote-props": [WARN, "consistent-as-needed"],
     quotes: [WARN, "single"],
     // "require-jsdoc": [ WARN, {
     //     "require": {
@@ -271,7 +272,7 @@ module.exports = {
     "sort-vars": OFF,
     // 'space-after-keywords': [ WARN, 'always' ],
     "space-before-blocks": [WARN, "always"],
-    "space-before-function-paren": [WARN, "never"],
+    // "space-before-function-paren": [WARN, "never"],
     // 'space-before-keywords': [ WARN, 'always' ],
     "space-in-parens": [WARN, "never"],
     "space-infix-ops": [WARN, { int32Hint: true }],

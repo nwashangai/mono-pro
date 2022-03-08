@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 
 import {
   createContainer,
@@ -8,7 +8,7 @@ import {
   InjectionMode
 } from 'awilix';
 import statusMonitor from 'express-status-monitor';
-import httpStatus from 'http-status';
+import * as httpStatus from 'http-status';
 import framework from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -16,8 +16,8 @@ import compression from 'compression';
 import * as ramda from 'ramda';
 import jwt from 'jsonwebtoken';
 import morgan from 'morgan';
-import mongoose from 'mongoose';
-import winston from 'winston';
+import { orm } from './infra/serviceLoader';
+import * as winston from 'winston';
 import bcrypt from 'bcrypt';
 import userEntity from './wallet/user';
 import verificationEntity from './wallet/verification';
@@ -37,7 +37,7 @@ import errorWatch from './infra/errorWatch';
 import passwordHash from './infra/hashPassword';
 import UserController from './controllers/UserController';
 import server from './interfaces/http/server';
-import types from './types';
+import * as types from './types';
 
 const container = createContainer({ injectionMode: InjectionMode.PROXY });
 
@@ -56,13 +56,13 @@ container.register({
   validation: asFunction(validation).singleton(),
   errorWatch: asFunction(errorWatch).singleton(),
   emailService: asClass(EmailService).singleton(),
-  jwtService: asClass(JWTService).singleton(),
   userController: asClass(UserController).singleton(),
+  jwtService: asClass(JWTService).singleton(),
   passwordHash: asFunction(passwordHash),
   logger: asFunction(logger).singleton(),
   router: asFunction(router).singleton(),
   jwt: asValue(jwt),
-  mongoose: asValue(mongoose),
+  orm: asValue(orm),
   fs: asValue(fs),
   winston: asValue(winston),
   bcrypt: asValue(bcrypt),

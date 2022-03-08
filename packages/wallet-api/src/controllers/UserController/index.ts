@@ -1,6 +1,18 @@
-import { userCases, verificationCases } from '../../use-cases';
+import {
+  UserControllerConstructorType,
+  HttpStatus,
+  CreateUserInput,
+  TypedRequestBody
+} from './types';
+import { userCases, UserTypes, verificationCases } from '../../use-cases';
+import { BuildReturn as VerificationBuild } from '../../use-cases/Verification/types';
 
 export default class UserController {
+  private users: UserTypes.BuildReturn;
+  private verification: VerificationBuild;
+  private httpStatus: HttpStatus;
+  private jwtService: any;
+
   constructor({
     codeGenerator,
     httpStatus,
@@ -9,7 +21,7 @@ export default class UserController {
     passwordHash,
     models,
     emailService
-  }) {
+  }: UserControllerConstructorType) {
     this.users = userCases({
       validation,
       passwordHash,
@@ -30,7 +42,7 @@ export default class UserController {
     this.login = this.login.bind(this);
   }
 
-  async startRegistration(request) {
+  async startRegistration(request: TypedRequestBody<{ email: string }>) {
     await this.verification.startRegistration({ email: request.body.email });
     return {
       statusCode: this.httpStatus.CREATED,
@@ -40,7 +52,9 @@ export default class UserController {
     };
   }
 
-  async completeRegistration(request) {
+  async completeRegistration(
+    request: TypedRequestBody<Omit<CreateUserInput, 'role'> & { code: string }>
+  ) {
     const { body: payload } = request;
 
     const isValid = await this.verification.isCodeValid(
@@ -49,7 +63,7 @@ export default class UserController {
     );
 
     if (!isValid) {
-      throw new Error(`{${this.httpStatus.BAD_REQUEST}} invalid code or email'`);
+      throw new Error(`{${this.httpStatus.BAD_REQUEST}} invalid code or email`);
     }
 
     await this.users.createNewUser(payload);
@@ -63,7 +77,7 @@ export default class UserController {
     };
   }
 
-  async login(request) {
+  async login(request: TypedRequestBody<{ email: string; password: string }>) {
     const { body: payload } = request;
 
     const user = await this.users.login(payload.email, payload.password);

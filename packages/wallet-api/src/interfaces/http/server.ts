@@ -1,3 +1,5 @@
+import { ServerConstructorType } from './types';
+
 export default ({
   config,
   router,
@@ -5,7 +7,7 @@ export default ({
   framework,
   bodyParser,
   compression
-}) => {
+}: ServerConstructorType) => {
   const app = framework();
 
   app.disable('x-powered-by').use(bodyParser.json()).use(compression());

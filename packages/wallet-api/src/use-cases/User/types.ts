@@ -19,7 +19,18 @@ export type UpdatePassword = (
   _id: string,
   password: string
 ) => Promise<_UpdateWriteOpResult>;
-export type Login = (email: string, password: string) => Promise<Types.IUser>;
+export type Login = (
+  email: string,
+  password: string
+) => Promise<{
+  id: string | null;
+  email: string;
+  name: string;
+  country: string | undefined;
+  phone: string;
+  lastLogin: Date;
+  role: string;
+}>;
 
 export type BuildReturn = {
   createNewUser: CreateUser;

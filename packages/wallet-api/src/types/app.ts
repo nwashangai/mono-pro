@@ -1,13 +1,11 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
+import morgan from 'morgan';
 import config from '../config';
-import logger from '../infra/logger';
+import { Logger } from 'winston';
 
-export type Logger = {
-  info: (message: string) => void;
-  error: (message: string) => void;
-  warn: (message: string) => void;
-  debug: (message: string) => void;
-};
+export type { IDB } from '../app/types';
+
+export type LoggerType = Logger;
 
 export interface App {
   start: () => Promise<void>;
@@ -21,5 +19,5 @@ export type HttpStatus = {
 };
 
 export type ConfigType = typeof config;
-export type LoggerType = typeof logger;
 export type MongooseType = typeof mongoose;
+export type MorganType = typeof morgan;

@@ -1,0 +1,3 @@
+uwallet(){
+    docker run -it app bash
+}

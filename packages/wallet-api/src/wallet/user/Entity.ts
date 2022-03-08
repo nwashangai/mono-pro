@@ -3,7 +3,7 @@ import {
   CreateUserInput,
   ConstructorType,
   CreateUserReturn
-} from './types.d';
+} from './types';
 
 export default class User implements UserType {
   private validator;
@@ -32,9 +32,9 @@ export default class User implements UserType {
     name,
     phone,
     country,
-    role,
+    role = 'REGULAR',
     lastLogin = new Date(),
-    password,
+    password = '',
     createdAt = new Date(),
     updatedAt = new Date()
   }: CreateUserInput): CreateUserReturn {

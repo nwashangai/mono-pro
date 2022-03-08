@@ -21,7 +21,7 @@ export default class Verify implements Verification {
     _id,
     email,
     code,
-    isVerified,
+    isVerified = false,
     createdAt = new Date(),
     updatedAt = new Date()
   }: RegisterInput): RegisterReturn {

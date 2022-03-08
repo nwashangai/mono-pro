@@ -18,7 +18,7 @@ export interface Verification {
 }
 
 export type ConstructorType = {
-  validator: Types.validation;
+  validator: Types.Validation;
   generateCode: Types.GenerateCode;
   httpStatus: Types.HttpStatus;
 };

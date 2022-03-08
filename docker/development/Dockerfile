@@ -8,7 +8,6 @@ RUN npm install -g lerna
 # RUN pip3 install --upgrade pip setupyarn bootstraptools passporteye
 # COPY ["package.json", "yarn.lock", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 COPY package.json /app
-COPY yarn.lock /app
 ENV NODE_ENV=development
 
 RUN yarn install

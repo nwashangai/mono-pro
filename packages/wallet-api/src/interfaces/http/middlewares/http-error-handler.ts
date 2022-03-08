@@ -1,4 +1,17 @@
-export default (err, req, res, next, logger, config, httpStatus) => {
+import * as Types from '../types';
+
+export default (
+  err: {
+    message: string;
+    stack: any;
+  },
+  req: Types.RequestObj,
+  res: typeof Types.Response,
+  next: () => void,
+  logger: Types.LoggerType,
+  config: Types.ConfigType,
+  httpStatus: Types.HttpStatus
+) => {
   if (err) {
     logger.error(err);
 

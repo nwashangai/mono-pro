@@ -2,16 +2,26 @@
   "extends": "@mono/tools/configs/tsconfig.json",
   "include": [
     "src/**/*.ts",
-    "src/**/*.js",
+    "src/**/*.d.ts",
   ],
   "compilerOptions": {
     "baseUrl": "./src",
-    "rootDir": "./src"
+    "skipLibCheck": true,
+    "preserveSymlinks": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "*" : ["typings/*"]
+    },
+    "module": "commonjs",
+    "lib": [ "es2017" ],
+    "noImplicitAny": false
   },
   "exclude": [
     "node_modules",
     "jest-mongo.js",
     "jest-setup.js",
+    "**/*.d.ts",
     "jest-teardown.js",
     "<node_internals>/**",
   ]

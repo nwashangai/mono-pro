@@ -24,7 +24,7 @@ export interface UserType {
 }
 
 export type ConstructorType = {
-  validator: Types.validation;
+  validator: Types.Validation;
   makeHash: Types.makeHash;
   isPasswordMatched: Types.isPasswordMatched;
   httpStatus: Types.HttpStatus;

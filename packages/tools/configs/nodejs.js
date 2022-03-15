@@ -248,7 +248,7 @@ module.exports = {
     "no-nested-ternary": WARN,
     "no-new-object": WARN,
     "no-plusplus": OFF,
-    "no-spaced-func": WARN,
+    // "no-spaced-func": WARN,
     "no-ternary": OFF,
     "no-trailing-spaces": WARN,
     // "no-underscore-dangle": WARN,

@@ -15,6 +15,7 @@ const loadDbConfig = (env: string) => {
 };
 
 const ENV = process.env.NODE_ENV || 'development';
+const chain = process.env.CHAIN;
 
 const envConfig: { default: EnvConfigType } = require(path.join(
   __dirname,
@@ -24,6 +25,7 @@ const envConfig: { default: EnvConfigType } = require(path.join(
 const dbConfig = loadDbConfig(ENV);
 const config = {
   env: ENV,
+  chain,
   db: dbConfig,
   ...envConfig.default
 };

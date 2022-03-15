@@ -14,7 +14,10 @@ export type GetUsers = (
   limit?: number,
   start?: number
 ) => Promise<CreateUserType[]>;
-export type GetUser = (_id: string) => Promise<CreateUserType | null>;
+export type GetUser = (filter: {
+  id?: string;
+  email?: string;
+}) => Promise<CreateUserType | null>;
 export type UpdatePassword = (
   _id: string,
   password: string
@@ -23,7 +26,7 @@ export type Login = (
   email: string,
   password: string
 ) => Promise<{
-  id: string | null;
+  id: string | null | Types.ObjectID;
   email: string;
   name: string;
   country: string | undefined;
@@ -57,4 +60,5 @@ export type BuilType = {
   };
   models: Types.Models;
   httpStatus: Types.HttpStatus;
+  constants: Types.ConstantsType;
 };

@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import morgan from 'morgan';
 import config from '../config';
+import * as constants from '../constants';
 import { Logger } from 'winston';
 
 export type { IDB } from '../app/types';
@@ -21,3 +22,4 @@ export type HttpStatus = {
 export type ConfigType = typeof config;
 export type MongooseType = typeof mongoose;
 export type MorganType = typeof morgan;
+export type ConstantsType = typeof constants;

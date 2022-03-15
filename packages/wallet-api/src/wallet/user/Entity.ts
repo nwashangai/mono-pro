@@ -2,7 +2,8 @@ import {
   UserType,
   CreateUserInput,
   ConstructorType,
-  CreateUserReturn
+  CreateUserReturn,
+  IUser
 } from './types';
 
 export default class User implements UserType {
@@ -16,14 +17,15 @@ export default class User implements UserType {
     validator,
     makeHash,
     isPasswordMatched,
-    httpStatus
+    httpStatus,
+    constants
   }: ConstructorType) {
     this.validator = validator;
     this.makeHash = makeHash;
     this.httpStatus = httpStatus;
     this.isPasswordMatched = isPasswordMatched;
     this.createUser = this.createUser.bind(this);
-    this.roles = ['REGULAR', 'ADMIN', 'SUPER_ADMIN'];
+    this.roles = constants.DEFAULT.ROLES;
   }
 
   createUser({
@@ -32,12 +34,12 @@ export default class User implements UserType {
     name,
     phone,
     country,
-    role = 'REGULAR',
+    role = this.roles[0],
     lastLogin = new Date(),
     password = '',
     createdAt = new Date(),
     updatedAt = new Date()
-  }: CreateUserInput): CreateUserReturn {
+  }: CreateUserInput | IUser): CreateUserReturn {
     if (!this.validator.isValidEmail(email)) {
       throw new Error(
         `{${this.httpStatus.BAD_REQUEST}} User must have a valid email`

@@ -4,7 +4,8 @@ import {
   BuildReturn,
   CreateUserInput,
   HttpStatus,
-  Models
+  Models,
+  ObjectID
 } from './types';
 import { UserType } from '../../wallet/user';
 
@@ -76,14 +77,14 @@ export default class User {
     }
 
     this.DB.users.updateOne(
-      { _id: userObj.getId() as string },
+      { _id: new ObjectID(userObj.getId() as string) },
       {
         lastLogin: userObj.getLastLogin()
       }
     );
 
     return {
-      id: userObj.getId(),
+      id: userObj.getId() as ObjectID,
       email: userObj.getEmail(),
       name: userObj.getName(),
       country: userObj.getNationality(),
@@ -145,8 +146,8 @@ export default class User {
     return users.map(user => this.makeNewUser(user));
   }
 
-  async getUser(id: any) {
-    const user = await this.DB.users.findOne({ _id: id });
+  async getUser(filter: { id?: string; email?: string }) {
+    const user = await this.DB.users.findOne(filter);
 
     return !user ? null : this.makeNewUser(user);
   }

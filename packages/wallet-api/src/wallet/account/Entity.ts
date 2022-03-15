@@ -19,7 +19,7 @@ export default class Account implements WalletType {
 
   account({
     _id = null,
-    owner,
+    owner = 'Application',
     currency,
     type,
     address,
@@ -35,7 +35,7 @@ export default class Account implements WalletType {
 
     return {
       getId: () => _id,
-      getOwner: () => owner || 'Application',
+      getOwner: () => owner,
       getCurrency: () => currency,
       getType: () => type,
       getAddress: () => address,

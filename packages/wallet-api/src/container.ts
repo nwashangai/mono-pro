@@ -30,6 +30,9 @@ import * as models from './repositories';
 import config from './config';
 import codeGenerator from './infra/codeGenerator';
 import EmailService from './infra/EmailService';
+import Blockchain from './infra/BlockchainService';
+import Cryptograph from './infra/Cryptograph';
+import * as constants from './constants';
 import JWTService from './infra/JWTService';
 import logger from './infra/logger';
 import validation from './infra/validation';
@@ -49,9 +52,12 @@ container.register({
   userUseCases: asFunction(userCases).singleton(),
   verificationUseCases: asFunction(verificationCases).singleton(),
   models: asValue(models),
+  constants: asValue(constants),
   config: asValue(config),
   server: asFunction(server).singleton(),
   dataSource: asClass(DataSource).singleton(),
+  blockchain: asClass(Blockchain).singleton(),
+  cryptograph: asClass(Cryptograph).singleton(),
   codeGenerator: asFunction(codeGenerator).singleton(),
   validation: asFunction(validation).singleton(),
   errorWatch: asFunction(errorWatch).singleton(),

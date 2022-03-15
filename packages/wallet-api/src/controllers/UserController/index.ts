@@ -2,9 +2,17 @@ import {
   UserControllerConstructorType,
   HttpStatus,
   CreateUserInput,
-  TypedRequestBody
+  TypedRequestBody,
+  TypedRequestWithParams,
+  ConstantsType
 } from './types';
-import { userCases, UserTypes, verificationCases } from '../../use-cases';
+import {
+  userCases,
+  UserTypes,
+  verificationCases,
+  accountCases
+} from '../../use-cases';
+import Account from '../../use-cases/Account/UseCases';
 import { BuildReturn as VerificationBuild } from '../../use-cases/Verification/types';
 
 export default class UserController {
@@ -12,6 +20,8 @@ export default class UserController {
   private verification: VerificationBuild;
   private httpStatus: HttpStatus;
   private jwtService: any;
+  private account: Account;
+  private constants: ConstantsType;
 
   constructor({
     codeGenerator,
@@ -20,13 +30,17 @@ export default class UserController {
     validation,
     passwordHash,
     models,
-    emailService
+    emailService,
+    constants,
+    cryptograph,
+    blockchain
   }: UserControllerConstructorType) {
     this.users = userCases({
       validation,
       passwordHash,
       models,
-      httpStatus
+      httpStatus,
+      constants
     });
     this.verification = verificationCases({
       validation,
@@ -37,9 +51,19 @@ export default class UserController {
     });
     this.httpStatus = httpStatus;
     this.jwtService = jwtService;
+    this.account = accountCases({
+      validation,
+      models,
+      httpStatus,
+      cryptograph,
+      blockchain,
+      constants
+    });
+    this.constants = constants;
     this.startRegistration = this.startRegistration.bind(this);
     this.completeRegistration = this.completeRegistration.bind(this);
     this.login = this.login.bind(this);
+    this.getUserData = this.getUserData.bind(this);
   }
 
   async startRegistration(request: TypedRequestBody<{ email: string }>) {
@@ -78,9 +102,11 @@ export default class UserController {
   }
 
   async login(request: TypedRequestBody<{ email: string; password: string }>) {
-    const { body: payload } = request;
+    const {
+      body: { email, password }
+    } = request;
 
-    const user = await this.users.login(payload.email, payload.password);
+    const user = await this.users.login(email, password);
 
     const token = this.jwtService.sign({
       id: user.id,
@@ -101,5 +127,47 @@ export default class UserController {
         role: user.role
       }
     };
+  }
+
+  async getUserData(request: TypedRequestWithParams<{ email: string }>) {
+    const {
+      params: { email }
+    } = request;
+
+    const user = await this.users.getUser({ email });
+
+    if (!user) {
+      throw new Error(`{${this.httpStatus.NOT_FOUND}} user does not exist`);
+    } else {
+      const userWallets = await this.account.getAllWallets(
+        user.getId() as string
+      );
+
+      const wallets = {};
+
+      userWallets.forEach(wallet => {
+        const walletEntity = Object.values(wallet)[0];
+        wallets[Object.keys(wallet)[0]] = {
+          address: walletEntity.getAddress(),
+          type: walletEntity.getType(),
+          dateCreated: walletEntity.getCreatedAt(),
+          isBlocked: walletEntity.isBlocked()
+        };
+      });
+
+      return {
+        statusCode: this.httpStatus.OK,
+        data: {
+          id: user.getId(),
+          name: user.getName(),
+          email: user.getEmail(),
+          role: user.getRole(),
+          lastLogin: user.getLastLogin(),
+          country: user.getNationality(),
+          dateJoined: user.getCreatedAt(),
+          wallets
+        }
+      };
+    }
   }
 }

@@ -4,12 +4,19 @@ import User from './UseCases';
 
 export * as UserTypes from './types';
 
-export default ({ validation, passwordHash, models, httpStatus }: BuilType) => {
+export default ({
+  validation,
+  passwordHash,
+  models,
+  httpStatus,
+  constants
+}: BuilType) => {
   const makeNewUser = buildUserEntityFactory({
     validator: validation,
     makeHash: passwordHash.hash,
     isPasswordMatched: passwordHash.isHashMatched,
-    httpStatus
+    httpStatus,
+    constants
   });
 
   return new User({ models, httpStatus, makeNewUser }).build();

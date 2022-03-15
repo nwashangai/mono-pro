@@ -13,4 +13,7 @@ export type UserControllerConstructorType = {
   };
   models: Types.Models;
   emailService: any;
+  constants: Types.ConstantsType;
+  blockchain: Types.BlockChainType;
+  cryptograph: Types.CryptographType;
 };

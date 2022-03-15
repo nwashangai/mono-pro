@@ -8,13 +8,15 @@ export default ({
   validator,
   makeHash,
   isPasswordMatched,
-  httpStatus
+  httpStatus,
+  constants
 }: ConstructorType): CreateUser => {
   const buildUser = new User({
     validator,
     makeHash,
     isPasswordMatched,
-    httpStatus
+    httpStatus,
+    constants
   });
   return buildUser.createUser;
 };

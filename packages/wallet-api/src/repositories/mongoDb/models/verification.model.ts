@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 // const ObjectID = require("mongodb").ObjectID;
 
 export interface IVerification extends mongoose.Document {
-  _id?: string;
   email: string;
   code: string;
   isVerified?: boolean;
@@ -13,12 +12,6 @@ export interface IVerification extends mongoose.Document {
 const { Schema } = mongoose;
 
 const verificationsSchema = new Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    index: true,
-    required: true,
-    auto: true
-  },
   email: {
     type: String,
     required: [true, 'email is required']

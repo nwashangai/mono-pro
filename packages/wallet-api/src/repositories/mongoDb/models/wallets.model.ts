@@ -2,13 +2,12 @@ import mongoose from 'mongoose';
 // const ObjectID = require("mongodb").ObjectID;
 
 export interface IWallet extends mongoose.Document {
-  _id?: string;
   owner: string;
   currency: string;
   type: string;
   address: string;
   isBlocked: boolean;
-  publicKey: string;
+  publicKey: Buffer;
   privateKey: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -17,14 +16,8 @@ export interface IWallet extends mongoose.Document {
 const { Schema } = mongoose;
 
 const walletSchema = new Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    index: true,
-    required: true,
-    auto: true
-  },
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     default: 'application'
   },
   currency: {
@@ -43,7 +36,7 @@ const walletSchema = new Schema({
     default: false
   },
   publicKey: {
-    type: String,
+    type: Buffer,
     required: [true, 'public key is required']
   },
   privateKey: {

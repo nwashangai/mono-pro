@@ -3,7 +3,7 @@ import * as Types from '../../types';
 export * from '../../types';
 
 export type CreateUserReturn = {
-  getId: () => string | null;
+  getId: () => string | null | Types.ObjectID;
   getEmail: () => string;
   getName: () => string;
   getPhone: () => string;
@@ -17,7 +17,9 @@ export type CreateUserReturn = {
   getUpdatedAt: () => Date;
 };
 
-export type CreateUser = (input: Types.CreateUserInput) => CreateUserReturn;
+export type CreateUser = (
+  input: Types.CreateUserInput | Types.IUser
+) => CreateUserReturn;
 
 export interface UserType {
   createUser: CreateUser;
@@ -28,4 +30,5 @@ export type ConstructorType = {
   makeHash: Types.makeHash;
   isPasswordMatched: Types.isPasswordMatched;
   httpStatus: Types.HttpStatus;
+  constants: Types.ConstantsType;
 };

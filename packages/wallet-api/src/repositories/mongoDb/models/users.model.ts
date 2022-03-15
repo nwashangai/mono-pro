@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 // const ObjectID = require("mongodb").ObjectID;
 
 export interface IUser extends mongoose.Document {
-  _id?: string;
   name: string;
   email: string;
   phone: string;
@@ -17,12 +16,6 @@ export interface IUser extends mongoose.Document {
 const { Schema } = mongoose;
 
 const usersSchema = new Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    index: true,
-    required: true,
-    auto: true
-  },
   email: {
     type: String
   },

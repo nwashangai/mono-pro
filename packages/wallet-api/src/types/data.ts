@@ -7,6 +7,10 @@ export interface TypedRequestBody<T> extends Request {
   body: T;
 }
 
+export interface TypedRequestWithParams<T> extends Request {
+  params: T;
+}
+
 export type RequestObj = Request;
 
 export type RegisterInput =
@@ -35,20 +39,18 @@ export type CreateUserReturn = {
   getUpdatedAt: () => Date;
 };
 
-export type CreateUserInput =
-  | {
-      _id?: string;
-      email: string;
-      name: string;
-      phone: string;
-      country?: string;
-      role?: string;
-      lastLogin?: Date;
-      password: string;
-      createdAt?: Date;
-      updatedAt?: Date;
-    }
-  | service.IUser;
+export type CreateUserInput = {
+  _id?: string;
+  email: string;
+  name: string;
+  phone: string;
+  country?: string;
+  role?: string;
+  lastLogin?: Date;
+  password: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
 export type AccountType = {
   _id?: string | null;
@@ -57,7 +59,7 @@ export type AccountType = {
   type: string;
   address: string;
   isBlocked?: boolean;
-  publicKey: string;
+  publicKey: Buffer;
   privateKey: string;
   createdAt?: Date;
   updatedAt?: Date;

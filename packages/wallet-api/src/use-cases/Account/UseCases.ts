@@ -1,30 +1,43 @@
-import { ConstructorType, Models, IWallet } from './types';
+import {
+  ConstructorType,
+  Models,
+  IWallet,
+  BlockChainType,
+  HttpStatus,
+  CryptographType,
+  ConstantsType
+} from './types';
 import buildAccountEntityFactory, {
   IAccount,
   AccountReturn
 } from '../../wallet/account';
 
 export default class Account {
-  private cryptograph;
-  private blockchain;
+  private cryptograph: CryptographType;
+  private blockchain: BlockChainType;
   private DB: Models;
   private account: IAccount;
+  private httpStatus: HttpStatus;
+  private constants: ConstantsType;
 
   constructor({
     validation,
     cryptograph,
     blockchain,
     models,
-    httpStatus
+    httpStatus,
+    constants
   }: ConstructorType) {
     this.cryptograph = cryptograph;
     this.blockchain = blockchain;
     this.DB = models;
+    this.httpStatus = httpStatus;
+    this.constants = constants;
     this.account = buildAccountEntityFactory({ validation, httpStatus });
-    this.createWallet = this.createWallet.bind(this);
+    this.getWallet = this.getWallet.bind(this);
   }
 
-  async createWallet({
+  async getWallet({
     userId = null,
     currency
   }: {
@@ -34,7 +47,10 @@ export default class Account {
     let wallet: IWallet | AccountReturn | null = null;
 
     if (userId) {
-      wallet = await this.DB.wallets.findOne({ owner: userId, currency });
+      wallet = await this.DB.wallets.findOne({
+        owner: userId,
+        currency: currency.toLocaleUpperCase()
+      });
     }
 
     if (wallet) {
@@ -52,7 +68,13 @@ export default class Account {
       });
     }
 
-    const blockchainWallet = await this.blockchain.createWallet(currency);
+    const blockchainWallet = await this.blockchain.generateWallet(currency);
+
+    if (!blockchainWallet) {
+      throw new Error(
+        `{${this.httpStatus.INTERNAL_SERVER_ERROR}} Third party error occured`
+      );
+    }
 
     wallet = this.account({
       _id: null,
@@ -61,12 +83,14 @@ export default class Account {
       type: blockchainWallet.type,
       address: blockchainWallet.address,
       publicKey: blockchainWallet.publicKey,
-      privateKey: blockchainWallet.privateKey
+      privateKey: blockchainWallet.privateKey,
+      createdAt: blockchainWallet.timestamp
     });
 
     await this.DB.wallets.create({
       owner: wallet.getOwner(),
       type: wallet.getType(),
+      currency: currency.toLocaleUpperCase(),
       address: wallet.getAddress(),
       publicKey: wallet.getPublicKey(),
       privateKey: this.cryptograph.encrypt(wallet.getPrivateKey()),
@@ -75,6 +99,19 @@ export default class Account {
     });
 
     return wallet;
+  }
+
+  async getAllWallets(
+    userId: string
+  ): Promise<{ [key: string]: AccountReturn }[]> {
+    return await Promise.all(
+      Object.entries(this.constants.CURRENCY).map(async ([key, currency]) => ({
+        [key]: await this.getWallet({
+          userId,
+          currency: currency.toLowerCase()
+        })
+      }))
+    );
   }
 
   async blockAccount(address: string): Promise<AccountReturn | null> {

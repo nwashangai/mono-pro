@@ -54,7 +54,13 @@ export default ({
     makeCallback(userController.completeRegistration)
   );
 
-  apiRouter.post('/auth/login', makeCallback(userController.login));
+  apiRouter.post(
+    '/auth/login',
+    validation.validateLogin,
+    makeCallback(userController.login)
+  );
+
+  apiRouter.get('/users/:email', makeCallback(userController.getUserData));
 
   router.use(`/api/${config.version}`, apiRouter);
 

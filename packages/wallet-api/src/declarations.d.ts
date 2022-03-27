@@ -1,0 +1,9 @@
+declare module 'express-status-monitor';
+declare module 'express';
+declare module 'body-parser';
+declare module 'cors';
+declare module 'compression';
+declare module 'ramda';
+declare module 'jsonwebtoken';
+declare module 'morgan';
+declare module 'bcrypt';

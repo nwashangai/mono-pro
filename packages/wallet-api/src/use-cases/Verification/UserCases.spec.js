@@ -1,11 +1,11 @@
 import jest from 'jest-mock';
 import httpStatus from 'http-status';
-import { buildFakeCollection } from '../../../__test__/fixtures/db';
+import { buildFakeCollection } from '../../__test__/fixtures/db';
 import buildVerificationCases from '.';
 import validation from '../../infra/validation';
 
 let emailService = {
-  sendMail: jest.fn(),
+  sendMail: jest.fn()
 };
 
 let verificationCases = buildVerificationCases({
@@ -17,10 +17,10 @@ let verificationCases = buildVerificationCases({
           ? {
               _id: '1',
               code: '1234',
-              isVerified: false,
+              isVerified: false
             }
           : null;
-      },
+      }
     },
     verifications: {
       ...buildFakeCollection('verifications'),
@@ -30,16 +30,16 @@ let verificationCases = buildVerificationCases({
               _id: '1',
               code: '654321',
               email: 'johndoe@example2.com',
-              isVerified: false,
+              isVerified: false
             }
           : null;
-      },
-    },
+      }
+    }
   },
   validation: validation(),
   codeGenerator: () => '123456',
   emailService,
-  httpStatus,
+  httpStatus
 });
 
 describe('Test Verification use cases', () => {
@@ -53,10 +53,10 @@ describe('Test Verification use cases', () => {
               ? {
                   _id: '1',
                   code: '1234',
-                  isVerified: false,
+                  isVerified: false
                 }
               : null;
-          },
+          }
         },
         verifications: {
           ...buildFakeCollection('verifications'),
@@ -66,16 +66,16 @@ describe('Test Verification use cases', () => {
                   _id: '1',
                   code: '654321',
                   email: 'johndoe@example2.com',
-                  isVerified: false,
+                  isVerified: false
                 }
               : null;
-          },
-        },
+          }
+        }
       },
       validation: validation(),
       codeGenerator: () => '123456',
       emailService,
-      httpStatus,
+      httpStatus
     });
   });
 
@@ -89,7 +89,7 @@ describe('Test Verification use cases', () => {
     await expect(
       verificationCases.startRegistration({
         email: 'johndoe@example2.com',
-        code: '777777',
+        code: '777777'
       })
     ).not.toBeUndefined();
   });
@@ -97,7 +97,7 @@ describe('Test Verification use cases', () => {
   it("send new code if user don't exist", async () => {
     await expect(
       verificationCases.startRegistration({
-        email: 'test@example.com',
+        email: 'test@example.com'
       })
     ).not.toBeUndefined();
   });
